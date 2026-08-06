@@ -53,7 +53,7 @@ function HomePage({ isOnline }) {
         <p className="find-me">♡ me encontre aqui ♡</p>
         <div className="social-icons">
           <a 
-            href="https://t.me/maryvelvetvip" 
+            href="https://t.me/secretsmary" 
             target="_blank" 
             rel="noopener noreferrer" 
             className="social-link telegram-link"
