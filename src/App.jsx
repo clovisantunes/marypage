@@ -1,17 +1,29 @@
 import React, { useState } from 'react'
+import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'
 import './App.css'
 import perfil from '../assets/perfil.png'
+import LinksPage from './LinksPage'
 
 function App() {
   const [isOnline, setIsOnline] = useState(true)
-  const link = "http://t.me/marysvelvetbot"
 
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<HomePage isOnline={isOnline} />} />
+        <Route path="/links" element={<LinksPage />} />
+      </Routes>
+    </BrowserRouter>
+  )
+}
+
+function HomePage({ isOnline }) {
   return (
     <div className="container">
       <div className="card">
         <div className="verified-badge">
-          <span className="sparkle">✨</span>
-          <span>Perfil Verificado</span>
+          <span className="sparkle">✦</span>
+          <span>verificado</span>
         </div>
 
         <div className="avatar-container">
@@ -21,40 +33,33 @@ function App() {
             </div>
           </div>
           <div className={`online-status ${isOnline ? 'online' : 'offline'}`}>
-            {isOnline ? '● Online agora' : '● Offline'}
+            {isOnline ? '● online' : '● offline'}
           </div>
         </div>
 
-        <h1 className="name">Mary Velvet</h1>
-        <p className="username">@maryvelvet</p>
+        <h1 className="name">mary velvet</h1>
+        <p className="username">♡ entre no meu universo ♡</p>
+        <p className="subtitle">meus links + onde me encontrar ✦</p>
 
-        <a href={link} className="chat-button-link">
+        <Link to="/links" className="chat-button-link">
           <button className="chat-button">
-            <i className="fas fa-comment-dots"></i>
-            Conversar Agora
+            <i className="fas fa-moon"></i>
+            meus links 🌙
           </button>
-        </a>
+        </Link>
 
         <div className="divider"></div>
 
+        <p className="find-me">♡ me encontre aqui ♡</p>
         <div className="social-icons">
           <a 
-            href="https://t.me/secretsmary" 
+            href="https://t.me/maryvelvetvip" 
             target="_blank" 
             rel="noopener noreferrer" 
-            className="social-link"
-            title="Telegram"
+            className="social-link telegram-link"
           >
             <i className="fab fa-telegram"></i>
-          </a>
-          <a 
-            href="https://syncpaycheckout.com.br/checkout/a197c474-04b8-4746-a082-e9a57a4f733d+a197c393-8d1b-4a87-9980-667684aa1bfc" 
-            target="_blank" 
-            rel="noopener noreferrer" 
-            className="social-link"
-            title="Privacy"
-          >
-            <i className="fas fa-lock"></i>
+            <span className="social-label">telegram</span>
           </a>
         </div>
       </div>
