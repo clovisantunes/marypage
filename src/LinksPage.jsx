@@ -38,7 +38,7 @@ function LinksPage() {
           </a>
 
           <a 
-            href="https://syncpaycheckout.com.br/checkout/a26a36bb-c2d2-4183-b5e6-eaa58171c48a+a197c393-8d1b-4a87-9980-667684aa1bfc" 
+            href="https://syncpaycheckout.com.br/checkout/a197c474-04b8-4746-a082-e9a57a4f733d+a197c393-8d1b-4a87-9980-667684aa1bfc" 
             className="link-item privacy"
           >
             <i className="fas fa-lock"></i>
