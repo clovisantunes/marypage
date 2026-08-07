@@ -19,7 +19,7 @@ function LinksPage() {
         </div>
 
         <div className="links-list">
-          <a href="https://t.me/maryvelvetbot" className="link-item telegram">
+          <a href="https://t.me/marysvelvetbot" className="link-item telegram">
             <i className="fab fa-telegram"></i>
             <div className="link-info">
               <span className="link-name">meu telegram</span>
