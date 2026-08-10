@@ -38,7 +38,7 @@ function LinksPage() {
           </a>
 
           <a 
-            href="https://syncpaycheckout.com.br/checkout/a197c474-04b8-4746-a082-e9a57a4f733d+a197c393-8d1b-4a87-9980-667684aa1bfc" 
+            href="https://privacy-maryvelvet.vercel.app/" 
             className="link-item privacy"
           >
             <i className="fas fa-lock"></i>
