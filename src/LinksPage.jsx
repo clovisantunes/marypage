@@ -116,7 +116,7 @@ function LinksPage() {
 
             <div className="link-info">
               <span className="link-name">
-                meu telegram
+                telegram
               </span>
 
               <span className="link-desc">
