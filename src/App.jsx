@@ -1,3 +1,4 @@
+// App.jsx - Página Inicial Atualizada
 import React, { useEffect, useState } from 'react'
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'
 import './App.css'
@@ -91,45 +92,36 @@ function HomePage({ isOnline }) {
     <div className="container">
       <div className="card">
 
-        <div className="verified-badge">
-          <span className="sparkle">✦</span>
-          <span>verificado</span>
-        </div>
-
-        <div className="avatar-container">
-          <div className="avatar-ring">
-            <div className="avatar">
-              <img
-                src={perfil}
-                alt="Mary Velvet"
-              />
-            </div>
+        {/* BADGES */}
+        <div className="badges-container">
+          <div className="verified-badge">
+            <span className="sparkle">✦</span>
+            <span>verificado</span>
           </div>
 
-          <div
-            className={`online-status ${
-              isOnline ? 'online' : 'offline'
-            }`}
-          >
+          <div className={`online-status ${isOnline ? 'online' : 'offline'}`}>
             {isOnline ? '● online' : '● offline'}
           </div>
         </div>
 
-        <h1 className="name">
-          mary velvet
-        </h1>
+        {/* AVATAR */}
+        <div className="avatar-container">
+          <div className="avatar-ring">
+            <div className="avatar">
+              <img src={perfil} alt="Mary Velvet" />
+            </div>
+          </div>
+        </div>
 
-        <p className="username">
-          ♡ entre no meu universo ♡
-        </p>
+        {/* NOME E DESCRIÇÃO */}
+        <h1 className="name">mary velvet</h1>
+        <p className="username">♡ entre no meu universo ♡</p>
+        <p className="subtitle">meus links + onde me encontrar ✦</p>
 
-        <p className="subtitle">
-          meus links + onde me encontrar ✦
-        </p>
-
+        {/* CTA PRINCIPAL - MEUS LINKS */}
         <Link
           to="/links"
-          className="chat-button-link"
+          className="main-cta-link"
           onClick={() =>
             trackEvent('click_my_links', {
               link_name: 'Meus links',
@@ -137,20 +129,18 @@ function HomePage({ isOnline }) {
             })
           }
         >
-          <button className="chat-button">
+          <button className="main-cta-button">
             <i className="fas fa-moon"></i>
-            meus links 🌙
+            meus links
           </button>
         </Link>
 
         <div className="divider"></div>
 
-        <p className="find-me">
-          ♡ me encontre aqui ♡
-        </p>
+        <p className="find-me">♡ me encontre aqui ♡</p>
 
+        {/* LINKS SOCIAIS */}
         <div className="social-icons">
-
           {/* TELEGRAM */}
           <a
             href="https://t.me/secretsmary"
@@ -165,30 +155,26 @@ function HomePage({ isOnline }) {
             }
           >
             <i className="fab fa-telegram"></i>
-
-            <span className="social-label">
-              telegram
-            </span>
+            <span className="social-label">telegram</span>
           </a>
 
-          {/* PRIVACY */}
+          {/* ACESSO VIP - COM A MESMA LINGUAGEM DA PÁGINA /LINKS */}
           <a
             href={privacyUrl}
-            className="social-link privacy-link"
+            className="social-link vip-link"
             onClick={() =>
-              trackEvent('click_privacy_home', {
-                link_name: 'Privacy',
+              trackEvent('click_vip_home', {
+                link_name: 'Acesso VIP',
                 destination: 'privacy'
               })
             }
           >
             <i className="fas fa-lock"></i>
-
-            <span className="social-label">
-              privacy
-            </span>
+            <div className="vip-label-wrapper">
+              <span className="social-label vip-label">acesso VIP</span>
+              <span className="vip-micro">+100 vídeos e fotos · conteúdo novo toda semana</span>
+            </div>
           </a>
-
         </div>
 
       </div>

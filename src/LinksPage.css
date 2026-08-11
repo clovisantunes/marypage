@@ -1,10 +1,11 @@
+/* LinksPage.css - Atualizado */
 .links-container {
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   min-height: 100vh;
-  background: linear-gradient(145deg, #0d0b0f 0%, #1a1420 100%);
   padding: 16px;
+  background: linear-gradient(145deg, #0d0b0f 0%, #1a1420 100%);
 }
 
 .links-card {
@@ -12,21 +13,26 @@
   width: 100%;
   background: rgba(20, 16, 28, 0.9);
   backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   border-radius: 40px;
   padding: 32px 24px 28px;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+  box-shadow: 
+    0 20px 60px rgba(0, 0, 0, 0.8),
+    0 0 0 1px rgba(150, 100, 200, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(150, 100, 200, 0.08);
 }
 
 .back-button {
   background: none;
   border: none;
-  font-size: 0.85rem;
   color: #7a6a8a;
+  font-size: 0.8rem;
   cursor: pointer;
-  margin-bottom: 20px;
   padding: 0;
-  transition: color 0.3s;
+  margin-bottom: 20px;
+  transition: all 0.3s ease;
+  font-family: inherit;
 }
 
 .back-button:hover {
@@ -42,9 +48,9 @@
   width: 60px;
   height: 60px;
   border-radius: 50%;
-  overflow: hidden;
   margin: 0 auto 10px;
-  border: 2px solid rgba(150, 100, 200, 0.15);
+  overflow: hidden;
+  border: 2px solid rgba(150, 100, 200, 0.2);
 }
 
 .avatar-mini img {
@@ -55,14 +61,16 @@
 
 .links-title {
   color: #e8d8f0;
-  font-size: 1.3rem;
+  font-size: 1.2rem;
   font-weight: 600;
+  margin: 0;
   text-transform: lowercase;
 }
 
 .links-sub {
   color: #7a6a8a;
   font-size: 0.7rem;
+  margin: 4px 0 0;
   font-weight: 300;
 }
 
@@ -79,7 +87,7 @@
   padding: 14px 18px;
   border-radius: 16px;
   text-decoration: none;
-  background: rgba(150, 100, 200, 0.04);
+  background: rgba(150, 100, 200, 0.03);
   border: 1px solid rgba(150, 100, 200, 0.06);
   transition: all 0.3s ease;
 }
@@ -89,78 +97,213 @@
 }
 
 .link-item i:first-child {
-  font-size: 1.3rem;
-  width: 24px;
-  text-align: center;
-}
-
-.link-item .fa-chevron-right {
-  margin-left: auto;
-  font-size: 0.8rem;
-  color: #4a3a50;
+  font-size: 1.4rem;
+  width: 1.4rem;
+  flex-shrink: 0;
 }
 
 .link-info {
+  flex: 1;
   display: flex;
   flex-direction: column;
+  gap: 2px;
 }
 
 .link-name {
+  color: #e8d8f0;
   font-size: 0.85rem;
   font-weight: 500;
-  color: #e8d8f0;
+  letter-spacing: 0.3px;
 }
 
 .link-desc {
+  color: #7a6a8a;
   font-size: 0.65rem;
-  color: #6a5a7a;
   font-weight: 300;
 }
 
-/* ===== MEU TELEGRAM ===== */
-.link-item.telegram {
-  border-left: 3px solid #0088cc;
+.link-item .fa-chevron-right {
+  color: #4a3a50;
+  font-size: 0.8rem;
+  transition: all 0.3s ease;
 }
 
+/* ===== VIP - DESTAQUE ===== */
+.link-item.vip {
+  background: linear-gradient(135deg, rgba(100, 50, 150, 0.15), rgba(150, 100, 200, 0.08));
+  border-color: rgba(150, 100, 200, 0.2);
+  padding: 18px 20px;
+  margin-bottom: 4px;
+}
+
+.link-item.vip i:first-child {
+  color: #c9a8e0;
+}
+
+.vip-name {
+  color: #c9a8e0 !important;
+  font-weight: 700 !important;
+  font-size: 0.9rem !important;
+}
+
+.vip-desc {
+  color: #9a8aaa !important;
+  font-weight: 400 !important;
+  font-size: 0.7rem !important;
+}
+
+.vip-arrow {
+  color: #7a4a9a !important;
+}
+
+.link-item.vip:hover {
+  background: linear-gradient(135deg, rgba(100, 50, 150, 0.25), rgba(150, 100, 200, 0.15));
+  border-color: rgba(150, 100, 200, 0.3);
+  transform: translateX(4px);
+  box-shadow: 0 4px 20px rgba(100, 50, 150, 0.15);
+}
+
+.link-item.vip:hover .vip-arrow {
+  color: #9b59b6 !important;
+}
+
+/* ===== TELEGRAM ===== */
 .link-item.telegram i:first-child {
-  color: #0088cc;
+  color: #9a8aaa;
 }
 
-/* ===== GRUPINHO TELEGRAM ===== */
-.link-item.group {
-  border-left: 3px solid #9b59b6;
+.link-item.telegram:hover {
+  background: rgba(100, 50, 150, 0.06);
+  border-color: rgba(150, 100, 200, 0.12);
+  transform: translateX(4px);
 }
 
-.link-item.group i:first-child {
+.link-item.telegram:hover i:first-child {
   color: #9b59b6;
 }
 
-/* ===== PRIVACY ===== */
-.link-item.privacy {
-  border-left: 3px solid #6c5ce7;
+.link-item.telegram:hover .fa-chevron-right {
+  color: #7a6a8a;
 }
 
-.link-item.privacy i:first-child {
-  color: #6c5ce7;
+/* ===== GRUPO ===== */
+.link-item.group i:first-child {
+  color: #9a8aaa;
 }
 
-/* ===== HOVER ===== */
-.link-item:hover {
+.link-item.group:hover {
+  background: rgba(100, 50, 150, 0.06);
+  border-color: rgba(150, 100, 200, 0.12);
   transform: translateX(4px);
-  background: rgba(150, 100, 200, 0.08);
 }
 
+.link-item.group:hover i:first-child {
+  color: #b090d0;
+}
+
+.link-item.group:hover .fa-chevron-right {
+  color: #7a6a8a;
+}
+
+/* ===== RESPONSIVIDADE ===== */
 @media (max-width: 380px) {
   .links-card {
     padding: 24px 16px 20px;
     border-radius: 28px;
   }
 
+  .avatar-mini {
+    width: 50px;
+    height: 50px;
+  }
+
   .link-item {
     padding: 12px 14px;
+    gap: 12px;
+  }
+
+  .link-item i:first-child {
+    font-size: 1.2rem;
+    width: 1.2rem;
   }
 
   .link-name {
-    font-size: 0.8rem;
+    font-size: 0.75rem;
+  }
+
+  .link-desc {
+    font-size: 0.6rem;
+  }
+
+  .link-item.vip {
+    padding: 14px 16px;
+  }
+
+  .vip-name {
+    font-size: 0.8rem !important;
+  }
+
+  .vip-desc {
+    font-size: 0.6rem !important;
+  }
+}
+
+@media (min-width: 600px) {
+  .links-card {
+    max-width: 450px;
+    padding: 40px 32px 32px;
+  }
+
+  .avatar-mini {
+    width: 70px;
+    height: 70px;
+  }
+
+  .link-item {
+    padding: 16px 22px;
+    border-radius: 18px;
+  }
+
+  .link-item i:first-child {
+    font-size: 1.6rem;
+    width: 1.6rem;
+  }
+
+  .link-name {
+    font-size: 0.95rem;
+  }
+
+  .link-desc {
+    font-size: 0.7rem;
+  }
+
+  .link-item.vip {
+    padding: 20px 24px;
+  }
+
+  .vip-name {
+    font-size: 1rem !important;
+  }
+
+  .vip-desc {
+    font-size: 0.75rem !important;
+  }
+}
+
+@media (min-width: 1025px) {
+  .link-item:hover {
+    transform: translateX(6px) !important;
+  }
+
+  .link-item.vip:hover {
+    transform: translateX(6px) !important;
+  }
+
+  .link-item.telegram:hover {
+    transform: translateX(6px) !important;
+  }
+
+  .link-item.group:hover {
+    transform: translateX(6px) !important;
   }
 }

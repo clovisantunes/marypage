@@ -1,3 +1,4 @@
+// LinksPage.jsx
 import React from 'react'
 import './LinksPage.css'
 import perfil from '../assets/perfil.png'
@@ -75,13 +76,13 @@ function LinksPage() {
 
         <div className="links-list">
 
-          {/* PRIVACY */}
+          {/* VIP - ACESSO VIP (PRIVACY) - EM DESTAQUE */}
           <a
             href={privacyUrl}
-            className="link-item privacy"
+            className="link-item vip"
             onClick={() =>
-              trackEvent('click_privacy', {
-                link_name: 'Privacy',
+              trackEvent('click_vip', {
+                link_name: 'Acesso VIP',
                 destination: 'privacy'
               })
             }
@@ -89,16 +90,16 @@ function LinksPage() {
             <i className="fas fa-lock"></i>
 
             <div className="link-info">
-              <span className="link-name">
-                🔒 conteúdo privado
+              <span className="link-name vip-name">
+                🔒 ACESSO VIP
               </span>
 
-              <span className="link-desc">
-                acesso completo e exclusivo
+              <span className="link-desc vip-desc">
+                +100 vídeos e fotos · conteúdo novo toda semana
               </span>
             </div>
 
-            <i className="fas fa-chevron-right"></i>
+            <i className="fas fa-chevron-right vip-arrow"></i>
           </a>
 
           {/* TELEGRAM */}
@@ -116,18 +117,18 @@ function LinksPage() {
 
             <div className="link-info">
               <span className="link-name">
-                telegram
+                💬 TELEGRAM
               </span>
 
               <span className="link-desc">
-                vem comigo ♡
+                acompanhe as novidades
               </span>
             </div>
 
             <i className="fas fa-chevron-right"></i>
           </a>
 
-          {/* GRUPO */}
+          {/* GRUPO GRÁTIS */}
           <a
             href="https://t.me/secretsmary"
             className="link-item group"
@@ -142,11 +143,11 @@ function LinksPage() {
 
             <div className="link-info">
               <span className="link-name">
-               👥 grupinho grátis
+                👥 GRUPO GRÁTIS
               </span>
 
               <span className="link-desc">
-                entre e conheça
+                conheça primeiro
               </span>
             </div>
 
