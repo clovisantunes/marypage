@@ -90,11 +90,11 @@ function LinksPage() {
 
             <div className="link-info">
               <span className="link-name">
-                privacy
+                🔒 conteúdo privado
               </span>
 
               <span className="link-desc">
-                pagamento seguro
+                acesso completo e exclusivo
               </span>
             </div>
 
@@ -120,7 +120,7 @@ function LinksPage() {
               </span>
 
               <span className="link-desc">
-                conteúdo exclusivo
+                vem comigo ♡
               </span>
             </div>
 
@@ -142,7 +142,7 @@ function LinksPage() {
 
             <div className="link-info">
               <span className="link-name">
-                grupinho grátis
+               👥 grupinho grátis
               </span>
 
               <span className="link-desc">
