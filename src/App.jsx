@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react'
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'
 import './App.css'
@@ -26,6 +25,41 @@ function saveTrackingParams() {
   })
 }
 
+// ===== GOOGLE ANALYTICS =====
+function trackEvent(eventName, params = {}) {
+  if (typeof window.gtag === 'function') {
+    window.gtag('event', eventName, params)
+  }
+}
+
+// ===== URL DO PRIVACY COM TRACKING =====
+function getPrivacyUrl() {
+  const params = new URLSearchParams()
+
+  const trackingParams = [
+    'fbclid',
+    'utm_source',
+    'utm_medium',
+    'utm_campaign',
+    'utm_content',
+    'utm_term'
+  ]
+
+  trackingParams.forEach((param) => {
+    const value = localStorage.getItem(`tracking_${param}`)
+
+    if (value) {
+      params.set(param, value)
+    }
+  })
+
+  const query = params.toString()
+
+  return query
+    ? `https://privacy-maryvelvet.vercel.app/?${query}`
+    : 'https://privacy-maryvelvet.vercel.app/'
+}
+
 function App() {
   const [isOnline] = useState(true)
 
@@ -51,6 +85,8 @@ function App() {
 }
 
 function HomePage({ isOnline }) {
+  const privacyUrl = getPrivacyUrl()
+
   return (
     <div className="container">
       <div className="card">
@@ -94,6 +130,12 @@ function HomePage({ isOnline }) {
         <Link
           to="/links"
           className="chat-button-link"
+          onClick={() =>
+            trackEvent('click_my_links', {
+              link_name: 'Meus links',
+              destination: 'links'
+            })
+          }
         >
           <button className="chat-button">
             <i className="fas fa-moon"></i>
@@ -108,17 +150,45 @@ function HomePage({ isOnline }) {
         </p>
 
         <div className="social-icons">
+
+          {/* TELEGRAM */}
           <a
             href="https://t.me/secretsmary"
             target="_blank"
             rel="noopener noreferrer"
             className="social-link telegram-link"
+            onClick={() =>
+              trackEvent('click_telegram_home', {
+                link_name: 'Telegram',
+                destination: 'telegram'
+              })
+            }
           >
             <i className="fab fa-telegram"></i>
+
             <span className="social-label">
               telegram
             </span>
           </a>
+
+          {/* PRIVACY */}
+          <a
+            href={privacyUrl}
+            className="social-link privacy-link"
+            onClick={() =>
+              trackEvent('click_privacy_home', {
+                link_name: 'Privacy',
+                destination: 'privacy'
+              })
+            }
+          >
+            <i className="fas fa-lock"></i>
+
+            <span className="social-label">
+              privacy
+            </span>
+          </a>
+
         </div>
 
       </div>
@@ -127,4 +197,3 @@ function HomePage({ isOnline }) {
 }
 
 export default App
-
