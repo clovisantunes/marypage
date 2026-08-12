@@ -1,9 +1,9 @@
-// LinksPage.jsx - Otimizado para Conversão
+// LinksPage.jsx - Versão Final
 import React, { useEffect } from 'react'
 import './LinksPage.css'
 import perfil from '../assets/perfil.png'
 
-// ===== FUNÇÕES DE TRACKING (MESMAS DO APP.JSX) =====
+// ===== FUNÇÕES DE TRACKING =====
 function getTrackingParams() {
   const params = new URLSearchParams()
   const trackingParams = ['fbclid', 'utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term']
@@ -27,26 +27,35 @@ function trackGA(eventName, params = {}) {
 function trackMeta(eventName, params = {}) {
   if (typeof window.fbq !== 'function') return
 
+  // FUNIL CORRETO - SEM LEAD FALSO
   const eventMap = {
-    'click_vip_links': { event: 'Lead', priority: 'high' },
-    'click_vip': { event: 'Lead', priority: 'high' },
-    'click_telegram_links': { event: 'Contact', priority: 'medium' },
-    'click_group_links': { event: 'Contact', priority: 'medium' },
-    'click_back_links': { event: 'CustomizeProduct', priority: 'low' },
-    'view_links_page': { event: 'ViewContent', priority: 'low' },
+    // 🛒 Intenção de compra
+    click_vip_links: 'InitiateCheckout',
+    
+    // 📞 Contato
+    click_telegram_links: 'Contact',
+    click_group_links: 'Contact',
+    
+    // 🔙 Navegação
+    click_back_links: 'CustomizeProduct',
+    
+    // 👀 Visualização
+    view_links_page: 'ViewContent'
   }
 
-  const mapped = eventMap[eventName]
-  
-  if (mapped) {
-    window.fbq('track', mapped.event, {
-      content_name: params.link_name || params.destination || eventName,
-      content_category: params.position || 'links',
-      ...params
-    })
-  } else {
+  const metaEvent = eventMap[eventName]
+
+  if (!metaEvent) {
     window.fbq('trackCustom', eventName, params)
+    return
   }
+
+  window.fbq('track', metaEvent, {
+    content_name: params.link_name || params.destination || eventName,
+    content_category: params.position || 'links',
+    content_type: params.destination || 'link',
+    ...params
+  })
 }
 
 function trackEvent(eventName, params = {}) {
@@ -76,7 +85,7 @@ function trackPageView(pageName, params = {}) {
   }
 }
 
-// ===== COMPONENTE PRINCIPAL =====
+// ===== LINKSPAGE =====
 function LinksPage() {
   const trackingParams = getTrackingParams()
 
@@ -84,7 +93,6 @@ function LinksPage() {
     ? `https://privacy-maryvelvet.vercel.app/?${trackingParams}&ref=maryvelvet&source=links_page`
     : 'https://privacy-maryvelvet.vercel.app/?ref=maryvelvet&source=links_page'
 
-  // Rastreia visualização da página de links
   useEffect(() => {
     trackPageView('Links Page', {
       page_type: 'links',
@@ -120,7 +128,7 @@ function LinksPage() {
 
         <div className="links-list">
 
-          {/* VIP - ACESSO VIP (PRIVACY) - EM DESTAQUE */}
+          {/* 🔥 VIP - InitiateCheckout (intenção de compra) */}
           <a
             href={privacyUrl}
             className="link-item vip"
@@ -129,8 +137,8 @@ function LinksPage() {
                 link_name: 'Acesso VIP',
                 destination: 'privacy',
                 position: 'destaque',
-                cta_type: 'conversion',
-                value: 0.01
+                cta_type: 'conversion'
+                // ❌ SEM Lead aqui!
               })
             }
           >

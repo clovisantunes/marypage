@@ -1,4 +1,4 @@
-// App.jsx - Otimizado para Conversão (Meta Pixel + GA4)
+// App.jsx - Versão Final com Funil Correto
 import React, { useEffect, useState } from 'react'
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'
 import './App.css'
@@ -18,82 +18,59 @@ function saveTrackingParams() {
   })
 }
 
-// ===== GOOGLE ANALYTICS 4 =====
+// ===== GOOGLE ANALYTICS =====
 function trackGA(eventName, params = {}) {
   if (typeof window.gtag === 'function') {
-    window.gtag('event', eventName, {
-      ...params,
-      send_to: 'G-CZCEKMJJW8'
-    })
+    window.gtag('event', eventName, params)
   }
 }
 
-// ===== META PIXEL - EVENTOS PADRÃO OTIMIZADOS =====
+// ===== META PIXEL - FUNIL CORRETO =====
 function trackMeta(eventName, params = {}) {
   if (typeof window.fbq !== 'function') return
 
-  // Mapeamento estratégico para eventos padrão do Meta
+  // Mapeamento estratégico - FUNIL DE VENDAS
   const eventMap = {
-    // 🔥 CRÍTICOS - Otimizam campanhas
-    'click_vip_home': { event: 'Lead', priority: 'high' },
-    'click_vip_links': { event: 'Lead', priority: 'high' },
-    'click_vip': { event: 'Lead', priority: 'high' },
+    // 🛒 Início do funil
+    view_links_page: 'ViewContent',
+    click_my_links: 'ViewContent',
     
-    // 📞 CONTATO - Engajamento
-    'click_telegram_home': { event: 'Contact', priority: 'medium' },
-    'click_telegram_links': { event: 'Contact', priority: 'medium' },
-    'click_group_links': { event: 'Contact', priority: 'medium' },
-    'click_telegram': { event: 'Contact', priority: 'medium' },
+    // 🔥 Intenção de compra (NÃO é Lead)
+    click_vip_home: 'InitiateCheckout',
+    click_vip_links: 'InitiateCheckout',
     
-    // 👀 VISUALIZAÇÃO - Aquecimento
-    'click_my_links': { event: 'ViewContent', priority: 'low' },
-    'view_links_page': { event: 'ViewContent', priority: 'low' },
+    // 📞 Contato (engajamento)
+    click_telegram_home: 'Contact',
+    click_telegram_links: 'Contact',
+    click_group_links: 'Contact',
     
-    // 🔙 NAVEGAÇÃO
-    'click_back_links': { event: 'CustomizeProduct', priority: 'low' },
-    'click_back': { event: 'CustomizeProduct', priority: 'low' },
+    // 🔙 Navegação
+    click_back_links: 'CustomizeProduct'
   }
 
-  const mapped = eventMap[eventName]
-  
-  if (mapped) {
-    // Evento padrão do Meta com parâmetros ricos
-    window.fbq('track', mapped.event, {
-      content_name: params.link_name || params.destination || eventName,
-      content_category: params.position || 'geral',
-      content_type: params.destination || 'link',
-      value: params.value || 0,
-      currency: 'BRL',
-      ...params
-    })
-    
-    // 🔥 PARA LEAD - Dispara evento de conversão com mais dados
-    if (mapped.event === 'Lead') {
-      window.fbq('track', 'Lead', {
-        content_name: 'Acesso VIP',
-        content_category: 'conversao',
-        value: 0.01, // Valor simbólico para Meta otimizar
-        currency: 'BRL',
-        ...params
-      })
-    }
-  } else {
-    // Fallback para eventos personalizados
+  const metaEvent = eventMap[eventName]
+
+  if (!metaEvent) {
     window.fbq('trackCustom', eventName, params)
+    return
   }
+
+  // Evento padrão do Meta
+  window.fbq('track', metaEvent, {
+    content_name: params.link_name || params.destination || eventName,
+    content_category: params.position || 'geral',
+    content_type: params.destination || 'link',
+    ...params
+  })
 }
 
-// ===== TRACKING DUPLO OTIMIZADO =====
+// ===== TRACKING DUPLO =====
 function trackEvent(eventName, params = {}) {
-  // Google Analytics
   trackGA(eventName, params)
-
-  // Meta Pixel (com eventos padrão)
   trackMeta(eventName, params)
 
-  // 🔍 Debug em desenvolvimento
   if (import.meta.env.DEV) {
-    console.log('📊 Evento rastreado:', {
+    console.log('📊 Evento:', {
       nome: eventName,
       params: params,
       timestamp: new Date().toISOString()
@@ -101,9 +78,8 @@ function trackEvent(eventName, params = {}) {
   }
 }
 
-// ===== EVENTO DE VISUALIZAÇÃO DE PÁGINA =====
+// ===== PAGE VIEW =====
 function trackPageView(pageName, params = {}) {
-  // GA4 - PageView
   if (typeof window.gtag === 'function') {
     window.gtag('event', 'page_view', {
       page_title: pageName,
@@ -112,8 +88,6 @@ function trackPageView(pageName, params = {}) {
     })
   }
 
-  // Meta Pixel - PageView já é disparado automaticamente no index.html
-  // Mas podemos enviar eventos adicionais
   if (typeof window.fbq === 'function') {
     window.fbq('track', 'ViewContent', {
       content_name: pageName,
@@ -123,7 +97,7 @@ function trackPageView(pageName, params = {}) {
   }
 }
 
-// ===== URL DO PRIVACY COM TRACKING =====
+// ===== URL DO PRIVACY =====
 function getPrivacyUrl() {
   const params = new URLSearchParams()
   const trackingParams = ['fbclid', 'utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term']
@@ -135,7 +109,6 @@ function getPrivacyUrl() {
     }
   })
 
-  // 🔥 Adiciona parâmetro de origem para saber que veio da Mary Velvet
   params.set('ref', 'maryvelvet')
   params.set('source', 'links_page')
 
@@ -145,7 +118,7 @@ function getPrivacyUrl() {
     : 'https://privacy-maryvelvet.vercel.app/?ref=maryvelvet'
 }
 
-// ===== VERIFICAR STATUS =====
+// ===== ONLINE STATUS =====
 function useOnlineStatus() {
   const [isOnline, setIsOnline] = useState(navigator.onLine)
 
@@ -165,14 +138,12 @@ function useOnlineStatus() {
   return isOnline
 }
 
-// ===== APP PRINCIPAL =====
+// ===== APP =====
 function App() {
   const isOnline = useOnlineStatus()
 
   useEffect(() => {
     saveTrackingParams()
-    
-    // Rastreia visualização da página inicial
     trackPageView('Home Page', {
       page_type: 'home',
       is_online: isOnline
@@ -193,19 +164,10 @@ function App() {
 function HomePage({ isOnline }) {
   const privacyUrl = getPrivacyUrl()
 
-  // Rastreia visualização da Home (adicional)
-  useEffect(() => {
-    trackPageView('Home Page View', {
-      page_section: 'home',
-      timestamp: new Date().toISOString()
-    })
-  }, [])
-
   return (
     <div className="container">
       <div className="card">
 
-        {/* BADGES */}
         <div className="badges-container">
           <div className="verified-badge">
             <span className="sparkle">✦</span>
@@ -216,7 +178,6 @@ function HomePage({ isOnline }) {
           </div>
         </div>
 
-        {/* AVATAR */}
         <div className="avatar-container">
           <div className="avatar-ring">
             <div className="avatar">
@@ -225,23 +186,21 @@ function HomePage({ isOnline }) {
           </div>
         </div>
 
-        {/* NOME E DESCRIÇÃO */}
         <h1 className="name">mary velvet</h1>
         <p className="username">♡ entre no meu universo ♡</p>
         <p className="subtitle">meus links + onde me encontrar ✦</p>
 
-        {/* CTA PRINCIPAL - MEUS LINKS */}
         <Link
           to="/links"
           className="main-cta-link"
-          onClick={() => {
+          onClick={() =>
             trackEvent('click_my_links', {
               link_name: 'Meus links',
               destination: 'links',
               position: 'hero',
               cta_type: 'primary'
             })
-          }}
+          }
         >
           <button className="main-cta-button">
             <i className="fas fa-moon"></i>
@@ -253,41 +212,39 @@ function HomePage({ isOnline }) {
 
         <p className="find-me">♡ me encontre aqui ♡</p>
 
-        {/* LINKS SOCIAIS */}
         <div className="social-icons">
           
-          {/* TELEGRAM */}
           <a
             href="https://t.me/secretsmary"
             target="_blank"
             rel="noopener noreferrer"
             className="social-link telegram-link"
-            onClick={() => {
+            onClick={() =>
               trackEvent('click_telegram_home', {
                 link_name: 'Telegram',
                 destination: 'telegram',
                 position: 'social',
                 cta_type: 'secondary'
               })
-            }}
+            }
           >
             <i className="fab fa-telegram"></i>
             <span className="social-label">telegram</span>
           </a>
 
-          {/* ACESSO VIP - BOT/PRIVACY */}
+          {/* 🔥 VIP - InitiateCheckout (intenção de compra) */}
           <a
             href={privacyUrl}
             className="social-link vip-link"
-            onClick={() => {
+            onClick={() =>
               trackEvent('click_vip_home', {
                 link_name: 'Acesso VIP',
                 destination: 'privacy',
                 position: 'social',
-                cta_type: 'conversion',
-                value: 0.01 // Valor simbólico
+                cta_type: 'conversion'
+                // ❌ SEM Lead aqui!
               })
-            }}
+            }
           >
             <i className="fas fa-lock"></i>
             <div className="vip-label-wrapper">
