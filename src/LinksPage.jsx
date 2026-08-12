@@ -1,4 +1,4 @@
-// LinksPage.jsx
+// LinksPage.jsx - Com rastreamento duplo (GA + Meta Pixel)
 import React from 'react'
 import './LinksPage.css'
 import perfil from '../assets/perfil.png'
@@ -27,10 +27,26 @@ function getTrackingParams() {
 }
 
 // ===== GOOGLE ANALYTICS =====
-function trackEvent(eventName, params = {}) {
+function trackGA(eventName, params = {}) {
   if (typeof window.gtag === 'function') {
     window.gtag('event', eventName, params)
   }
+}
+
+// ===== META PIXEL =====
+function trackMeta(eventName, params = {}) {
+  if (typeof window.fbq === 'function') {
+    window.fbq('track', eventName, params)
+  }
+}
+
+// ===== TRACKING DUPLO =====
+function trackEvent(eventName, params = {}) {
+  // Google Analytics
+  trackGA(eventName, params)
+
+  // Meta Pixel
+  trackMeta(eventName, params)
 }
 
 function LinksPage() {
@@ -47,8 +63,9 @@ function LinksPage() {
         <button
           className="back-button"
           onClick={() => {
-            trackEvent('click_back', {
-              link_name: 'Voltar'
+            trackEvent('click_back_links', {
+              link_name: 'Voltar',
+              destination: 'home'
             })
 
             window.history.back()
@@ -81,9 +98,10 @@ function LinksPage() {
             href={privacyUrl}
             className="link-item vip"
             onClick={() =>
-              trackEvent('click_vip', {
+              trackEvent('click_vip_links', {
                 link_name: 'Acesso VIP',
-                destination: 'privacy'
+                destination: 'privacy',
+                position: 'destaque'
               })
             }
           >
@@ -107,9 +125,10 @@ function LinksPage() {
             href="https://t.me/marysvelvetbot"
             className="link-item telegram"
             onClick={() =>
-              trackEvent('click_telegram', {
+              trackEvent('click_telegram_links', {
                 link_name: 'Telegram',
-                destination: 'telegram'
+                destination: 'telegram',
+                position: 'lista'
               })
             }
           >
@@ -133,9 +152,10 @@ function LinksPage() {
             href="https://t.me/secretsmary"
             className="link-item group"
             onClick={() =>
-              trackEvent('click_group', {
+              trackEvent('click_group_links', {
                 link_name: 'Grupo grátis',
-                destination: 'group'
+                destination: 'group',
+                position: 'lista'
               })
             }
           >

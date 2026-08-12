@@ -1,10 +1,11 @@
-// App.jsx - Página Inicial Atualizada
+// App.jsx - Página Inicial com Meta Pixel + Google Analytics
 import React, { useEffect, useState } from 'react'
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'
 import './App.css'
 import perfil from '../assets/perfil.png'
 import LinksPage from './LinksPage'
 
+// ===== SALVAR PARÂMETROS DE TRACKING =====
 function saveTrackingParams() {
   const params = new URLSearchParams(window.location.search)
 
@@ -27,10 +28,26 @@ function saveTrackingParams() {
 }
 
 // ===== GOOGLE ANALYTICS =====
-function trackEvent(eventName, params = {}) {
+function trackGA(eventName, params = {}) {
   if (typeof window.gtag === 'function') {
     window.gtag('event', eventName, params)
   }
+}
+
+// ===== META PIXEL =====
+function trackMeta(eventName, params = {}) {
+  if (typeof window.fbq === 'function') {
+    window.fbq('track', eventName, params)
+  }
+}
+
+// ===== TRACKING DUPLO =====
+function trackEvent(eventName, params = {}) {
+  // Google Analytics
+  trackGA(eventName, params)
+
+  // Meta Pixel
+  trackMeta(eventName, params)
 }
 
 // ===== URL DO PRIVACY COM TRACKING =====
@@ -158,7 +175,7 @@ function HomePage({ isOnline }) {
             <span className="social-label">telegram</span>
           </a>
 
-          {/* ACESSO VIP - COM A MESMA LINGUAGEM DA PÁGINA /LINKS */}
+          {/* ACESSO VIP */}
           <a
             href={privacyUrl}
             className="social-link vip-link"
