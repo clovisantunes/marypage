@@ -1,4 +1,4 @@
-// App.jsx - Versão Final com Funil Correto
+// App.jsx - Versão Final Corrigida
 import React, { useEffect, useState } from 'react'
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'
 import './App.css'
@@ -25,32 +25,32 @@ function trackGA(eventName, params = {}) {
   }
 }
 
-// ===== META PIXEL - FUNIL CORRETO =====
+// ===== META PIXEL - FUNIL LIMPO =====
 function trackMeta(eventName, params = {}) {
   if (typeof window.fbq !== 'function') return
 
-  // Mapeamento estratégico - FUNIL DE VENDAS
+  // Mapeamento SEM duplicação de ViewContent
   const eventMap = {
-    // 🛒 Início do funil
-    view_links_page: 'ViewContent',
-    click_my_links: 'ViewContent',
-    
-    // 🔥 Intenção de compra (NÃO é Lead)
+    // 🔥 Intenção de compra
     click_vip_home: 'InitiateCheckout',
     click_vip_links: 'InitiateCheckout',
     
-    // 📞 Contato (engajamento)
+    // 📞 Contato
     click_telegram_home: 'Contact',
     click_telegram_links: 'Contact',
     click_group_links: 'Contact',
     
     // 🔙 Navegação
-    click_back_links: 'CustomizeProduct'
+    click_back_links: 'CustomizeProduct',
+    
+    // ❌ REMOVIDO: click_my_links não mapeia mais para ViewContent
+    // click_my_links: 'ViewContent'  ← REMOVIDO
   }
 
   const metaEvent = eventMap[eventName]
 
   if (!metaEvent) {
+    // Evento personalizado (fallback)
     window.fbq('trackCustom', eventName, params)
     return
   }
@@ -78,7 +78,7 @@ function trackEvent(eventName, params = {}) {
   }
 }
 
-// ===== PAGE VIEW =====
+// ===== PAGE VIEW - SOMENTE PARA VISUALIZAÇÃO REAL =====
 function trackPageView(pageName, params = {}) {
   if (typeof window.gtag === 'function') {
     window.gtag('event', 'page_view', {
@@ -88,6 +88,7 @@ function trackPageView(pageName, params = {}) {
     })
   }
 
+  // ⚠️ SÓ DISPARA ViewContent QUANDO A PÁGINA É REALMENTE VISUALIZADA
   if (typeof window.fbq === 'function') {
     window.fbq('track', 'ViewContent', {
       content_name: pageName,
@@ -144,10 +145,15 @@ function App() {
 
   useEffect(() => {
     saveTrackingParams()
-    trackPageView('Home Page', {
-      page_type: 'home',
-      is_online: isOnline
-    })
+    // ⚠️ Home NÃO DISPARA ViewContent (só PageView automático do Pixel)
+    // Apenas rastreia no GA4 se quiser
+    if (typeof window.gtag === 'function') {
+      window.gtag('event', 'page_view', {
+        page_title: 'Home Page',
+        page_location: window.location.href,
+        page_type: 'home'
+      })
+    }
   }, [isOnline])
 
   return (
@@ -190,6 +196,7 @@ function HomePage({ isOnline }) {
         <p className="username">♡ entre no meu universo ♡</p>
         <p className="subtitle">meus links + onde me encontrar ✦</p>
 
+        {/* CTA PRINCIPAL - MEUS LINKS */}
         <Link
           to="/links"
           className="main-cta-link"
@@ -214,6 +221,7 @@ function HomePage({ isOnline }) {
 
         <div className="social-icons">
           
+          {/* TELEGRAM */}
           <a
             href="https://t.me/secretsmary"
             target="_blank"
@@ -232,7 +240,7 @@ function HomePage({ isOnline }) {
             <span className="social-label">telegram</span>
           </a>
 
-          {/* 🔥 VIP - InitiateCheckout (intenção de compra) */}
+          {/* VIP - InitiateCheckout */}
           <a
             href={privacyUrl}
             className="social-link vip-link"
@@ -242,7 +250,6 @@ function HomePage({ isOnline }) {
                 destination: 'privacy',
                 position: 'social',
                 cta_type: 'conversion'
-                // ❌ SEM Lead aqui!
               })
             }
           >
